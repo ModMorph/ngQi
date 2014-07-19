@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" data-ng-app="ngQiExamples">
+<head>
+    <title>ngQi Examples</title>
+    <script src="../qimessaging.js"></script>
+    <script src="../Scripts/angular.js"></script>
+    <script src="../Scripts/angular-ui-router.js"></script>
+    <script src="../app.js"></script>
+
+    <script src="../Examples/ngqiexamples.js"></script>
+</head>
+<body>
+    <div ng-controller="ngQiExampleController">
+
+        <select ng-options="l for l in availableLanguages" ng-model="activeLanguage"></select><button ng-click="selectNewLanguage()">Change Language</button>
+
+        <textarea ng-model="text2Say" type="text"></textarea><button ng-click="say()">Say</button>
+
+        <select ng-options="v for v in voices" ng-model="activeVoice"></select><button ng-click="selectNewVoice()" >Select New Voice</button>
+
+        <input type="range" min="0" max="100" ng-model="volume" step="1" ng-change="setVolume()" />
+
+        <div>
+            <h2>
+                meta.description
+            </h2>
+            <h3>Methods</h3>
+            <ul>
+                <li ng-repeat="m in meta.methods">
+                    <p><strong>{{m.name}}</strong> - {{m.description}}</p>
+                    <ul>
+                        <li ng-repeat="p in m.parameters">
+                            {{p.name}} - {{p.description}}
+                        </li>
+                    </ul>
+                    <p>{{m.returnDescription}} / {{m.returnSignature}}</p>
+                    {{m.uid}}
+                    {{m.parametersSignature}}
+                </li>
+            </ul>
+            <!--<h3>Properties</h3>
+            <ul>
+                <li ng-repeat="p in meta.properties"><p><strong>{{p.name}}</strong> - {{p.description}}</p></li>
+            </ul>-->
+            <h3>Signals</h3>
+            <ul>
+
+                <li ng-repeat="s in meta.signals"><p><strong>{{s.name}}</strong>  - {{s.signature}} - {{s.id}}</p></li>
+
+            </ul>
+        </div> 
+
+
+
+    </div>
+    <span ng-qi-memory-key="footContact"></span></body>
+    
+   
+
+</html>

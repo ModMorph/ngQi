@@ -1,0 +1,32 @@
+﻿
+<select ng-options="k as k for (k, v) in ALProxies" ng-model="selectedALProxy" ng-change="selectProxy()"></select>
+<div style="max-height:400px;overflow-y:scroll">
+    <h2>
+        <p><strong>{{proxyName}}</strong> - {{meta.description}}</p>
+    </h2>
+    <h3>Methods</h3>
+    <ul>
+        <li ng-repeat="m in meta.methods">
+            <h4>{{m.name}}</h4> 
+            <h5>{{m.description}}</h5> 
+            <ul>
+                <li ng-repeat="p in m.parameters">
+                    {{p.name}} - {{p.description}}
+                </li>
+            </ul>
+            <p>{{m.returnDescription}} / {{m.returnSignature}}</p>
+            {{m.uid}}
+            {{m.parametersSignature}}
+        </li>
+    </ul>
+    <!--<h3>Properties</h3>
+    <ul>
+        <li ng-repeat="p in meta.properties"><p><strong>{{p.name}}</strong> - {{p.description}}</p></li>
+    </ul>-->
+    <h3>Signals</h3>
+    <ul>
+
+        <li ng-repeat="s in meta.signals"><p><strong>{{s.name}}</strong>  - {{s.signature}} - {{s.id}}</p></li>
+
+    </ul>
+</div>

@@ -1,0 +1,11 @@
+﻿
+<select ng-options="l for l in availableLanguages" ng-model="activeLanguage"></select>
+<button ng-click="selectNewLanguage()">Change Language</button>
+
+<textarea ng-model="text2Say" type="text"></textarea>
+<button ng-click="say()">Say</button>
+
+<select ng-options="v for v in voices" ng-model="activeVoice"></select>
+<button ng-click="selectNewVoice()">Select New Voice</button>
+
+<input type="range" min="0" max="100" ng-model="volume" step="1" ng-change="setVolume()" />

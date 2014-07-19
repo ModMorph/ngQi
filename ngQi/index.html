@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" data-ng-app="ngQi">
+<head>
+    <meta charset="utf-8" />
+    <title>TypeScript HTML App</title>
+    <link rel="stylesheet" href="app.css" type="text/css" />
+   
+   
+    <script src="Scripts/angular.min.js"></script>
+    <script src="qimessaging.js"></script>
+    <script src="app.js"></script>
+    <script>
+
+        //var session = new QiSession("10.0.1.7");
+
+        //session.socket().on('connect', function () {
+        //    console.log('QiSession connected!');
+        //    // now you can start using your QiSession
+
+        //    //session.service("ALMemory").done(function (ALMemory) {
+        //    //    ALMemory.subscriber("FrontTactilTouched").done(function (subscriber) {
+        //    //        // subscriber.signal is a signal associated to "FrontTactilTouched"
+        //    //        subscriber.signal.connect(function (state) {
+        //    //            console.log(state == 1 ? "You just touched my head!" : "Bye bye!");
+        //    //        });
+        //    //    });
+        //    //});
+
+        //    var signalLink;
+        //    var serviceDirectory;
+
+        //    function onServiceAdded(serviceId, serviceName) {
+        //        console.log("New service", serviceId, serviceName);
+        //        serviceDirectory.serviceAdded.disconnect(signalLink);
+        //    }
+
+        //    session.service("ServiceDirectory").done(function (sd) {
+        //        serviceDirectory = sd;
+        //        serviceDirectory.serviceAdded.connect(onServiceAdded).done(function (link) {
+        //            signalLink = link;
+        //        }).fail(function (error) {
+        //            console.log("An error occurred: " + error);
+        //        });
+        //    });
+
+        //    //session.service("ALTextToSpeech").done(function (tts) {
+           
+
+        //    //    var availableLanguages = tts.getAvailableLanguages().done(function (data) {
+        //    //        for (item in data)
+        //    //        {
+        //    //            // tts is a proxy to the ALTextToSpeech service
+        //    //            tts.say(item);
+
+        //    //        }
+                   
+        //    //    })
+        //    //}).fail(function (error) {
+        //    //    console.log("An error occurred:", error);
+        //    //});
+
+        //}).on('disconnect', function () {
+        //    console.log('QiSession disconnected!');
+        //});
+
+
+
+    </script>
+</head>
+<body>
+    <h1>TypeScript HTML App</h1>
+
+    <div id="content"></div>
+</body>
+</html>
