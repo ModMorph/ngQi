@@ -90,3 +90,4 @@ angular.module("ngQiExamples", ["ngQi"]).controller("ngQiExampleController", ["$
 //                }
 //            })
 //    })
+//# sourceMappingURL=ngqiexamples.js.map

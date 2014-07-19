@@ -189,7 +189,36 @@ var packageController = (function () {
     return packageController;
 })();
 
-angular.module('ngQiUI', ['ngQi']).controller('ttsController', ['$scope', 'ngQisessionWrapper', ttsController]).directive('ngQiTts', function () {
+var ledController = (function () {
+    function ledController($scope, ngQisessionWrapper) {
+        var session = ngQisessionWrapper.addSession('10.0.1.7');
+
+        session.getALProxy(29 /* ALLedsProxy */).then(function (proxy) {
+            $scope.LEDs = [];
+
+            proxy.listLEDs().done(function (data) {
+                data.forEach(function (value, index, arr) {
+                    $scope.LEDs.push(value);
+                });
+            });
+
+            proxy.listGroups().done(function (data) {
+                data.forEach(function (value, index, arr) {
+                    $scope.LEDs.push(value);
+                });
+            });
+
+            $scope.fadeRGB = function () {
+                var hex = $scope.color.replace(/#/, '0x');
+
+                proxy.fadeRGB($scope.ledType, parseInt(hex), $scope.duration);
+            };
+        });
+    }
+    return ledController;
+})();
+
+angular.module('ngQiUI', ['ngQi', 'yaru22.jsonHuman']).controller('ttsController', ['$scope', 'ngQisessionWrapper', ttsController]).directive('ngQiTts', function () {
     return {
         restrict: 'EA',
         controller: 'ttsController',
@@ -229,6 +258,14 @@ angular.module('ngQiUI', ['ngQi']).controller('ttsController', ['$scope', 'ngQis
         replace: false,
         templateUrl: 'template/package/package.html'
     };
+}).controller('ledController', ['$scope', 'ngQisessionWrapper', ledController]).directive('ngQiLed', function () {
+    return {
+        restrict: 'EA',
+        controller: 'ledController',
+        transclude: true,
+        replace: false,
+        templateUrl: 'template/led/led.html'
+    };
 });
 //}
 //    .config(function ($stateProvider, $urlRouterProvider) {
@@ -258,3 +295,4 @@ angular.module('ngQiUI', ['ngQi']).controller('ttsController', ['$scope', 'ngQis
 //                }
 //            })
 //    })
+//# sourceMappingURL=ngQiUI.js.map

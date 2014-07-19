@@ -1,0 +1,7 @@
+﻿
+<select ng-options="l as l for l in LEDs" ng-model="ledType"></select>
+Select LED Color: {{color}}    
+<input type="color" ng-model="color" />
+Duration: {{duration}}
+<input type="range" min="1" max="60" step="1" ng-model="duration" />
+<button ng-click="fadeRGB()">Fade RGB</button>

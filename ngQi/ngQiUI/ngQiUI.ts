@@ -322,7 +322,58 @@ class packageController {
 }
 
 
-angular.module('ngQiUI', ['ngQi'])//, 'ui-router'
+class ledController {
+
+    constructor($scope, ngQisessionWrapper) {
+
+        var session = ngQisessionWrapper.addSession('10.0.1.7');
+
+
+
+        session.getALProxy(ALProxies.ALLedsProxy).then
+            ((proxy) => {
+
+                $scope.LEDs = []; 
+
+                proxy.listLEDs().done((data:any[]) => {
+
+                    data.forEach((value, index, arr) => {
+                        $scope.LEDs.push(value); 
+                    }); 
+                    
+                }); 
+
+                proxy.listGroups().done((data:any[]) => {
+
+                    data.forEach((value, index, arr) => {
+                        $scope.LEDs.push(value);
+                    });
+
+                }); 
+
+                $scope.fadeRGB = () => {
+
+                    var hex=$scope.color.replace(/#/, '0x');
+
+                    proxy.fadeRGB($scope.ledType, parseInt(hex), $scope.duration); 
+                };
+              
+                
+              
+            });
+
+
+
+
+
+
+
+    }
+
+}
+
+
+angular.module('ngQiUI', ['ngQi', 'yaru22.jsonHuman'])//, 'ui-router'
     .controller('ttsController', ['$scope', 'ngQisessionWrapper', ttsController])
 // The accordion directive simply sets up the directive controller
 // and adds an accordion CSS class to itself element.
@@ -383,6 +434,18 @@ angular.module('ngQiUI', ['ngQi'])//, 'ui-router'
             transclude: true,
             replace: false,
             templateUrl: 'template/package/package.html'
+        };
+
+    }) 
+ .controller('ledController', ['$scope', 'ngQisessionWrapper', ledController])
+    .directive('ngQiLed', function () {
+        return {
+
+            restrict: 'EA',
+            controller: 'ledController',
+            transclude: true,
+            replace: false,
+            templateUrl: 'template/led/led.html'
         };
 
     }); 

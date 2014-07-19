@@ -8,4 +8,4 @@
 <select ng-options="v for v in voices" ng-model="activeVoice"></select>
 <button ng-click="selectNewVoice()">Select New Voice</button>
 
-<input type="range" min="0" max="100" ng-model="volume" step="1" ng-change="setVolume()" />
+<input type="range" min="0" max="100" ng-model="volume" step="1" ng-change="setVolume()" role="volume control" />

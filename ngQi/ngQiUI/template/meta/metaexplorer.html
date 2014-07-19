@@ -1,5 +1,8 @@
 ﻿
 <select ng-options="k as k for (k, v) in ALProxies" ng-model="selectedALProxy" ng-change="selectProxy()"></select>
+
+<!--<div json-human="meta"></div>-->
+
 <div style="max-height:400px;overflow-y:scroll">
     <h2>
         <p><strong>{{proxyName}}</strong> - {{meta.description}}</p>

@@ -1,6 +1,7 @@
 ﻿/// <reference path="scripts/typings/socket.io-client/socket.io-client.d.ts" />
 /// <reference path="scripts/typings/angularjs/angular.d.ts" />
 
+/** Enums */
 var ConnectionState;
 (function (ConnectionState) {
     ConnectionState[ConnectionState["Connecting"] = 0] = "Connecting";
@@ -12,6 +13,7 @@ var ConnectionState;
 })(ConnectionState || (ConnectionState = {}));
 ;
 
+/** NaoQI 2.1 Proxies */
 var ALProxies;
 (function (ALProxies) {
     ALProxies[ALProxies["None"] = 0] = "None";
@@ -138,6 +140,7 @@ var ALMemoryKeys;
     ALMemoryKeys[ALMemoryKeys["VisualSpaceHistory_VisualGrid_Data"] = 48] = "VisualSpaceHistory_VisualGrid_Data";
 })(ALMemoryKeys || (ALMemoryKeys = {}));
 
+/** / is replaced with _, <ID> where ID is an integer identifier is replaced with $ character  */
 var ALEvents;
 (function (ALEvents) {
     ALEvents[ALEvents["None"] = 0] = "None";
@@ -710,3 +713,4 @@ angular.module("ngQi", []).value("QiSession", QiSession).provider("ngQisessionWr
 
         return dir;
     }]);
+//# sourceMappingURL=app.js.map

@@ -18,10 +18,26 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="app.css" />
+    <Content Include="bower_components\angular-json-human\dist\angular-json-human.css" />
+    <Content Include="bower_components\angular-json-human\dist\angular-json-human.js" />
+    <Content Include="bower_components\angular-json-human\dist\angular-json-human.min.css" />
+    <Content Include="bower_components\angular-json-human\dist\angular-json-human.min.js" />
+    <Content Include="bower_components\angular-mocks\angular-mocks.js" />
+    <Content Include="bower_components\angular\angular-csp.css" />
+    <Content Include="bower_components\angular\angular.js" />
+    <Content Include="bower_components\angular\angular.min.js" />
+    <Content Include="bower_components\lodash\dist\lodash.compat.js" />
+    <Content Include="bower_components\lodash\dist\lodash.compat.min.js" />
+    <Content Include="bower_components\lodash\dist\lodash.js" />
+    <Content Include="bower_components\lodash\dist\lodash.min.js" />
+    <Content Include="bower_components\lodash\dist\lodash.underscore.js" />
+    <Content Include="bower_components\lodash\dist\lodash.underscore.min.js" />
+    <Content Include="bower_components\lodash\LICENSE.txt" />
     <Content Include="Examples\index.html" />
     <Content Include="index.html" />
     <Content Include="ngQiUI\index.html" />
     <Content Include="ngQiUI\template\audio\audio.html" />
+    <Content Include="ngQiUI\template\led\led.html" />
     <Content Include="ngQiUI\template\meta\metaexplorer.html" />
     <Content Include="ngQiUI\template\package\package.html" />
     <Content Include="ngQiUI\template\tts\tts.html" />
@@ -358,6 +374,23 @@
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="CodeGenerators\ALProxies.csv" />
     <Content Include="CodeGenerators\TypeScriptEnumGen.ps1" />
+    <None Include=".bin\bower.cmd" />
+    <None Include=".bin\git.cmd" />
+    <None Include=".bin\node.cmd" />
+    <Content Include="bower_components\angular-json-human\.bower.json" />
+    <Content Include="bower_components\angular-json-human\bower.json" />
+    <Content Include="bower_components\angular-json-human\LICENSE" />
+    <Content Include="bower_components\angular-json-human\README.md" />
+    <Content Include="bower_components\angular-mocks\.bower.json" />
+    <Content Include="bower_components\angular-mocks\bower.json" />
+    <Content Include="bower_components\angular-mocks\README.md" />
+    <Content Include="bower_components\angular\.bower.json" />
+    <Content Include="bower_components\angular\angular.min.js.gzip" />
+    <Content Include="bower_components\angular\angular.min.js.map" />
+    <Content Include="bower_components\angular\bower.json" />
+    <Content Include="bower_components\angular\README.md" />
+    <Content Include="bower_components\lodash\.bower.json" />
+    <Content Include="bower_components\lodash\bower.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
