@@ -13,3 +13,4 @@ describe("ngQi", function () {
         // Teardown
     });
 });
+//# sourceMappingURL=Test.js.map
