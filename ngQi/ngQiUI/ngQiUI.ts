@@ -6,10 +6,53 @@
 declare var unescape;
 declare var Tiff; 
 declare var Uint8ClampedArray; 
+declare var annyang;
+
+/** Note, needs SSL to prevent getting prompted over and over again. */
+ class speechRecognition {
+
+    private _annyang;
+
+    public isRunning: boolean;
+    public enabled: boolean; 
+
+    constructor(annyang) {
+        this._annyang = annyang; 
+
+        this.isRunning = false; 
+        this.enabled = angular.isDefined(annyang) && annyang != null && annyang != false;
+    }
+
+    public start(): void {
+        if (this.enabled) {
+
+            this._annyang.debug();
+            this._annyang.start();
+            this.isRunning = true; 
+        }
+
+    }
+
+    public stop(): void {
+        if (this.enabled) {
+            this._annyang.abort();
+            this.isRunning = false;
+        }
+    }
+
+    public addCommands(cmds): void {
+        if (this.enabled) {
+            this._annyang.addCommands(cmds);
+        }
+    }
+   
+}
+
+
 
 class ttsController {
 
-    constructor($scope, ngQisessionWrapper) {
+    constructor($scope, ngQisessionWrapper, speechRecognition) {
 
         $scope.availableLanguages = [];
 
@@ -79,6 +122,26 @@ class ttsController {
                 }
             }
             });
+
+
+        var cmds = {
+            'Repeat (after me,) *term': (term) => {
+
+                $scope.text2Say = term + ' doh'; 
+            }
+            };
+
+        speechRecognition.addCommands(cmds);
+
+        $scope.start = () => {
+
+            speechRecognition.start();
+        };
+
+        $scope.stop = () => {
+
+            speechRecognition.stop(); 
+        };
 
     }
 
@@ -268,8 +331,8 @@ class videoController {
                         for (var k = 0; k < unsignedCharArray.length; ) {
 
                             
-                            rgbaImageData.data[k] = unsignedCharArray[k + 1].charCodeAt(0); //r; 
-                            rgbaImageData.data[k + 1] = unsignedCharArray[k].charCodeAt(0);   //g;
+                            rgbaImageData.data[k] = unsignedCharArray[k].charCodeAt(0); //r; 
+                            rgbaImageData.data[k + 1] = unsignedCharArray[k + 1].charCodeAt(0);   //g;
                             rgbaImageData.data[k + 2] = unsignedCharArray[k + 2].charCodeAt(0); ///b;
                             rgbaImageData.data[k + 3] = 255;//unsignedCharArray[k + 3].charCodeAt(0);  //a;
 
@@ -458,6 +521,14 @@ class audioController {
 
 
                 }
+
+                $scope.mute = () => {
+                    playerProxy.muteAudioOut(true);    
+                };
+
+                $scope.unmute = () => {
+                    playerProxy.muteAudioOut(false); 
+                };
             });
 
 
@@ -496,6 +567,51 @@ class packageController {
 
 
 
+
+
+
+
+    }
+
+}
+
+
+
+class batteryController {
+
+    constructor($scope, ngQisessionWrapper,$interval) {
+
+        var session = ngQisessionWrapper.addSession('10.0.1.7');
+
+
+
+        $scope.batteryLevel = null;
+
+        session.getALProxy(ALProxies.ALBatteryProxy).then
+            ((proxy) => {
+
+           
+
+                $scope.getBatteryCharge = () => {
+
+                    proxy.getBatteryCharge().done((data) => {
+                        $scope.batteryLevel = data; 
+                    });
+                  
+                };
+
+                $scope.getBatteryCharge(); 
+
+                $interval(() => {
+
+                    $scope.getBatteryCharge();
+
+                }, 60000, 0,true);
+                
+            });
+
+
+            
 
 
 
@@ -557,7 +673,12 @@ class ledController {
 
 
 angular.module('ngQiUI', ['ngQi', 'yaru22.jsonHuman'])//, 'ui-router'
-    .controller('ttsController', ['$scope', 'ngQisessionWrapper', ttsController])
+    .value('annyang', annyang)
+    .factory('speechRecognition', ['annyang', (annyang) => {
+        return new speechRecognition(annyang);
+    }
+    ])
+    .controller('ttsController', ['$scope', 'ngQisessionWrapper', 'speechRecognition', ttsController])
 // The accordion directive simply sets up the directive controller
 // and adds an accordion CSS class to itself element.
     .directive('qiTts', function () {
@@ -619,8 +740,8 @@ angular.module('ngQiUI', ['ngQi', 'yaru22.jsonHuman'])//, 'ui-router'
             templateUrl: 'template/package/package.html'
         };
 
-    }) 
- .controller('ledController', ['$scope', 'ngQisessionWrapper', ledController])
+    })
+    .controller('ledController', ['$scope', 'ngQisessionWrapper', ledController])
     .directive('qiLed', function () {
         return {
 
@@ -631,9 +752,24 @@ angular.module('ngQiUI', ['ngQi', 'yaru22.jsonHuman'])//, 'ui-router'
             templateUrl: 'template/led/led.html'
         };
 
+    })
+    .controller('batteryController', ['$scope', 'ngQisessionWrapper', '$interval', batteryController])
+    .directive('qiBattery', function () {
+        return {
+
+            restrict: 'EA',
+            controller: 'batteryController',
+            transclude: true,
+            replace: false,
+            templateUrl: 'template/battery/battery.html'
+        };
+
     }); 
 
-//}
+
+
+
+
 
 
    

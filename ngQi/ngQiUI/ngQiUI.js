@@ -1,7 +1,38 @@
 ﻿/// <reference path='../app.ts' />
 
+/** Note, needs SSL to prevent getting prompted over and over again. */
+var speechRecognition = (function () {
+    function speechRecognition(annyang) {
+        this._annyang = annyang;
+
+        this.isRunning = false;
+        this.enabled = angular.isDefined(annyang) && annyang != null && annyang != false;
+    }
+    speechRecognition.prototype.start = function () {
+        if (this.enabled) {
+            this._annyang.debug();
+            this._annyang.start();
+            this.isRunning = true;
+        }
+    };
+
+    speechRecognition.prototype.stop = function () {
+        if (this.enabled) {
+            this._annyang.abort();
+            this.isRunning = false;
+        }
+    };
+
+    speechRecognition.prototype.addCommands = function (cmds) {
+        if (this.enabled) {
+            this._annyang.addCommands(cmds);
+        }
+    };
+    return speechRecognition;
+})();
+
 var ttsController = (function () {
-    function ttsController($scope, ngQisessionWrapper) {
+    function ttsController($scope, ngQisessionWrapper, speechRecognition) {
         $scope.availableLanguages = [];
 
         var session = ngQisessionWrapper.addSession('10.0.1.7');
@@ -60,6 +91,22 @@ var ttsController = (function () {
                 }
             };
         });
+
+        var cmds = {
+            'Repeat (after me,) *term': function (term) {
+                $scope.text2Say = term + ' doh';
+            }
+        };
+
+        speechRecognition.addCommands(cmds);
+
+        $scope.start = function () {
+            speechRecognition.start();
+        };
+
+        $scope.stop = function () {
+            speechRecognition.stop();
+        };
     }
     return ttsController;
 })();
@@ -202,8 +249,8 @@ var videoController = (function () {
                     }
 
                     for (var k = 0; k < unsignedCharArray.length;) {
-                        rgbaImageData.data[k] = unsignedCharArray[k + 1].charCodeAt(0); //r;
-                        rgbaImageData.data[k + 1] = unsignedCharArray[k].charCodeAt(0); //g;
+                        rgbaImageData.data[k] = unsignedCharArray[k].charCodeAt(0); //r;
+                        rgbaImageData.data[k + 1] = unsignedCharArray[k + 1].charCodeAt(0); //g;
                         rgbaImageData.data[k + 2] = unsignedCharArray[k + 2].charCodeAt(0); ///b;
                         rgbaImageData.data[k + 3] = 255; //unsignedCharArray[k + 3].charCodeAt(0);  //a;
 
@@ -312,6 +359,14 @@ var audioController = (function () {
             $scope.playSine = function () {
                 playerProxy.playSine(300, 25, 0, 1);
             };
+
+            $scope.mute = function () {
+                playerProxy.muteAudioOut(true);
+            };
+
+            $scope.unmute = function () {
+                playerProxy.muteAudioOut(false);
+            };
         });
     }
     return audioController;
@@ -334,6 +389,29 @@ var packageController = (function () {
         });
     }
     return packageController;
+})();
+
+var batteryController = (function () {
+    function batteryController($scope, ngQisessionWrapper, $interval) {
+        var session = ngQisessionWrapper.addSession('10.0.1.7');
+
+        $scope.batteryLevel = null;
+
+        session.getALProxy(12 /* ALBatteryProxy */).then(function (proxy) {
+            $scope.getBatteryCharge = function () {
+                proxy.getBatteryCharge().done(function (data) {
+                    $scope.batteryLevel = data;
+                });
+            };
+
+            $scope.getBatteryCharge();
+
+            $interval(function () {
+                $scope.getBatteryCharge();
+            }, 60000, 0, true);
+        });
+    }
+    return batteryController;
 })();
 
 var ledController = (function () {
@@ -365,7 +443,11 @@ var ledController = (function () {
     return ledController;
 })();
 
-angular.module('ngQiUI', ['ngQi', 'yaru22.jsonHuman']).controller('ttsController', ['$scope', 'ngQisessionWrapper', ttsController]).directive('qiTts', function () {
+angular.module('ngQiUI', ['ngQi', 'yaru22.jsonHuman']).value('annyang', annyang).factory('speechRecognition', [
+    'annyang', function (annyang) {
+        return new speechRecognition(annyang);
+    }
+]).controller('ttsController', ['$scope', 'ngQisessionWrapper', 'speechRecognition', ttsController]).directive('qiTts', function () {
     return {
         restrict: 'EA',
         controller: 'ttsController',
@@ -413,8 +495,15 @@ angular.module('ngQiUI', ['ngQi', 'yaru22.jsonHuman']).controller('ttsController
         replace: false,
         templateUrl: 'template/led/led.html'
     };
+}).controller('batteryController', ['$scope', 'ngQisessionWrapper', '$interval', batteryController]).directive('qiBattery', function () {
+    return {
+        restrict: 'EA',
+        controller: 'batteryController',
+        transclude: true,
+        replace: false,
+        templateUrl: 'template/battery/battery.html'
+    };
 });
-//}
 //    .config(function ($stateProvider, $urlRouterProvider) {
 //         For any unmatched url, send to /route1
 //        $urlRouterProvider.otherwise('/home')

@@ -4,7 +4,8 @@
 
 <textarea ng-model="text2Say" type="text"></textarea>
 <button ng-click="say()">Say</button>
-
+<button ng-click="start()">Start Voice Recognition</button>
+<button ng-click="stop()">Stop </button>
 <select ng-options="v for v in voices" ng-model="activeVoice"></select>
 <button ng-click="selectNewVoice()">Select New Voice</button>
 
